@@ -1,0 +1,48 @@
+from pathlib import Path
+
+
+OUT_USD = Path(r"C:\robotics\droneRL\assets\drone\iris_with_gemini.usda")
+
+USDA_TEXT = """#usda 1.0
+(
+    defaultPrim = "drone"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "drone"
+{
+    def Xform "visual" (
+        prepend references = @../../Collected_litterRoad/SubUSDs/iris.usd@</vehicle>
+    )
+    {
+        double3 xformOp:translate = (-0.006406921423632361, 0.001716576879682602, 0.010203000158071518)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        over "body"
+        {
+            def Xform "camera_joint"
+            {
+                double3 xformOp:translate = (0.1289855680909504, 0, 0)
+                quatd xformOp:orient = (0.5, 0.5, 0.5, 0.5)
+                double3 xformOp:scale = (1, 1, 1)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Xform "Gemini2" (
+                    prepend references = @../../Collected_litterRoad/SubUSDs/orbbec_gemini2_v1.0.usd@</World/Orbbec_Gemini2>
+                )
+                {
+                    double3 xformOp:translate = (0, 0, 0)
+                    quatd xformOp:orient = (1, 0, 0, 0)
+                    double3 xformOp:scale = (0.01, 0.01, 0.01)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+        }
+    }
+}
+"""
+
+
+OUT_USD.parent.mkdir(parents=True, exist_ok=True)
+OUT_USD.write_text(USDA_TEXT)
